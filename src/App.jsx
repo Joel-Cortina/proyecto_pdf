@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './routes/login'
 import Vistaprincipal from './routes/vistaprincipal'
 import Añadir from './routes/añadir'
 import GenerarPdf from './routes/generarPdf'
+import MyDocument from './ui/Pdf'
 
 
-function App() {
+
+export default function App() {
   return(
     <BrowserRouter>
       <Routes>
@@ -17,9 +17,10 @@ function App() {
         <Route path='/home'  element={<Vistaprincipal/>}/>
         <Route path='/añadir' element={<Añadir/>}/>
         <Route path='/generar' element={<GenerarPdf/>}  />
+        <Route path='/pdf' element={<MyDocument/>}  />
       </Routes>
     </BrowserRouter>
   )
 }
 
-export default App
+

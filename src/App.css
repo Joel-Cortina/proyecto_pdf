@@ -21,6 +21,15 @@
   height: 100dvh;
 }
 
+
+
+.button-group{
+  
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .bienvenida {
   font-size: 14px;
   font-weight: lighter;
@@ -109,6 +118,33 @@
   color: #40414a;
 }
 
+
+.border-top-pdf{
+    border-bottom: 1px solid red;
+    width: "100px";
+
+}
+
+.pdf{
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  padding: 5rem;
+  width: 45%;
+  height: 100vh;
+
+}
+ 
+.texto-bold{
+  color: #000;
+  
+}
+
+.tx{
+  display: flex;
+  
+  justify-content: flex-end;
+  
+}
+
 .input-box .input-field label {
   position: absolute;
   top: 0.625rem;
@@ -144,7 +180,7 @@
 
 .submit {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   font-size: 16px;
   border-radius: 7px;
   background-color: #ccc;
@@ -152,6 +188,7 @@
   cursor: not-allowed;
   border: 0.0625rem solid #ddd;
   transition: all 300ms;
+  
 }
 
 .submit:enabled {

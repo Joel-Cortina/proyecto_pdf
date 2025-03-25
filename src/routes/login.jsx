@@ -1,6 +1,7 @@
 import Red5glogo from "../assets/red5glogo.jpg";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Link } from "react-router-dom";
 
 const styles = {
   position: "absolute",
@@ -11,29 +12,63 @@ const styles = {
 
 export default function Login() {
   const [isSee, setIsSee] = useState(false);
+
   const [nameInput, setNameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+  const [logeado, setLogeado] = useState(false)
+
+
+  const [token, setToken] = useState("")
+
+
+  const inputRefPassword = useRef(null)
+  const inputRefUsername = useRef(null)
 
 
 
 
   const handleSubmitLogin = (e) => {
-    e.preventDefault()
-    window.alert("jdsfjsf")
-  }
+    e.preventDefault();
+
+
+    const requestData = {
+      username: inputRefUsername.current.value,
+      password: inputRefPassword.current.value
+    };
+
+    fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setLogeado(true)
+          return response.json()
+        }
+      })
+      .then((data) => {
+
+        console.log("Respuestaas:", data);
+        localStorage.setItem("token", data.message)
+        console.log(`Local storage Item :  ${localStorage.getItem("token")}`)
+        location.href = "/home"
+
+      })
+      .catch((error) => {
+        console.error("Ocurrio un error aqui:: ", error);
+      });
+  };
 
 
 
   const inputDisable = useRef(null);
 
-  useEffect(() => {
 
-    if (nameInput.length > 0 && passwordInput.length > 10) {
-      inputDisable.current.disabled = false;
-    } else {
-      inputDisable.current.disabled = true;
-    }
-  }, [nameInput, passwordInput]);
+
+  
 
   return (
     <div className="login">
@@ -46,19 +81,22 @@ export default function Login() {
             <div className="input-box">
               <header>¡Bienvenido a Red 5G!</header>
               <header className="bienvenida">Inicio de Sesión</header>
-              <form onSubmit={handleSubmitLogin} >
+              <form onSubmit={(e) => handleSubmitLogin(e)} >
                 <div className="input-field">
                   <input
+                    defaultValue={"admin"}
                     type="text"
                     className="input"
                     id="username"
                     required
+                    ref={inputRefUsername}
                     onChange={(e) => setNameInput(e.target.value)}
                   />
                   <label htmlFor="username" style={{ fontSize: "11px" }} >Usuario</label>
                 </div>
                 <div className="input-field">
                   <input
+                    ref={inputRefPassword}
                     onChange={(e) => {
                       setPasswordInput(e.target.value)
                       console.log(passwordInput)
@@ -67,9 +105,11 @@ export default function Login() {
                     className="input"
                     id="password"
                     required
+                    defaultValue={123456}
                   />
                   <label htmlFor="password" style={{ fontSize: "11px" }} >Contraseña</label>
                   <i
+
                     id="togglePassword"
                     style={styles}
                     onClick={() => {
@@ -84,7 +124,6 @@ export default function Login() {
                     className="submit"
                     id="loginButton"
                     value="Iniciar sesión"
-                    disabled
                   />
                 </div>
               </form>

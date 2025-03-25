@@ -2,14 +2,49 @@ import { useState } from "react";
 import Red5glogo from "../assets/red5glogo.jpg";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Link } from "react-router-dom";
+import { PDFViewer } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+
+
+
+
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'row',
+    backgroundColor: '#E4E4E4'
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1
+  }
+});
+
+// Create Document Component
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text>Section #1</Text>
+      </View>
+      <View style={styles.section}>
+        <Text>Section #2</Text>
+      </View>
+    </Page>
+  </Document>
+);
+
+
 
 export default function Vistaprincipal() {
   const navigate = useNavigate();
   const [cedula, setCedula] = useState("");
-  const [pdfUrl, setPdfUrl] = useState(""); 
+  const [pdfUrl, setPdfUrl] = useState("");
   const [email, setEmail] = useState("");
-  const [showModal, setShowModal] = useState(false); 
-  const [loading, setLoading] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
     if (!cedula) {
@@ -25,7 +60,7 @@ export default function Vistaprincipal() {
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-        
+
         setPdfUrl(url);
       } else {
         const errorData = await response.json();
@@ -48,12 +83,12 @@ export default function Vistaprincipal() {
       .catch((error) => {
         console.error("Error al descargar el PDF:", error);
         alert("Hubo un problema al descargar el PDF.");
-        throw error;  
+        throw error;
       });
 
     const formData = new FormData();
     formData.append("email", email);
-    formData.append("archivo", pdfBlob, `${cedula}.pdf`);  
+    formData.append("archivo", pdfBlob, `${cedula}.pdf`);
 
     setLoading(true);
     try {
@@ -74,7 +109,7 @@ export default function Vistaprincipal() {
       alert("Hubo un problema al enviar el correo.");
     } finally {
       setLoading(false);
-      setShowModal(false); 
+      setShowModal(false);
     }
   };
 
@@ -123,92 +158,42 @@ export default function Vistaprincipal() {
             </ul>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <button
-                  className="nav-link btn btn-danger custom-btn custom-btn-primary"
+                <Link
+                  to={"/generar"}
+                  className="btn"
                   href="#"
                   id="generatePdfBtn"
-                  onClick={() => navigate("/generar")}
                 >
                   Generar PDF <Icon icon="mdi:file-pdf-box" width="20" height="20" />
-                </button>
+                </Link>
               </li>
-              <li className="nav-item">
-                <a
-                  className="nav-link btn btn-primary custom-btn custom-btn-primary"
-                  href="/template/agregar_usuario.html"
-                  id="addUserBtn"
-                >
-                  Añadir Usuario<i className="fa-solid fa-user-plus"></i>
-                </a>
+              <li >
+                <Link to={"/añadir"} className="btn" >
+                  Añadir Usuario <Icon icon="lucide:user-round" width="24" height="24" color="#fff" />
+                </Link>
               </li>
             </ul>
           </div>
         </div>
       </nav>
 
-      {pdfUrl && (
-        <div className="pdf-viewer">
-          <iframe
-            src={pdfUrl}
-            width="100%"
-            height="600px"
-            title="PDF Viewer"
-          />
-          <button
-            className="btn btn-primary mt-3"
-            onClick={() => setShowModal(true)}
-          >
-            Enviar al correo
-          </button>
-        </div>
-      )}
 
-      {/* Modal para ingresar el correo */}
-      {showModal && (
-        <div className="modal fade show" style={{ display: "block" }} tabIndex="-1" role="dialog" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Enviar PDF por Correo</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => setShowModal(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Ingresa el correo electrónico"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleSendEmail}
-                  disabled={loading}
-                >
-                  Enviar
-                </button>
-              </div>
-            </div>
-          </div>
+      <main className="" style={{ padding: "1rem" }} >
+        <h1>Example</h1>
+        <div>
+        <embed src={"../../public/TEMPLATE.pdf"} width="50%" height="900px" type="application/pdf" />
+
         </div>
-      )}
+        <div className="button-group">
+          <button className="btn btn-danger">Enviar al correo</button>
+          <button className="btn" >Descargar</button>
+        </div>
+       
+      </main>
+
+    
+
     </div>
   );
 }
+

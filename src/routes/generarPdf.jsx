@@ -18,7 +18,7 @@ export default function GenerarPdf() {
   const handleSubmit = async () => {
 
 
-    const {nombre,cedula,fecha_ingreso,cargo,salario} = formData
+    const {nombre,cedula,fecha_ingreso,cargo,salario} = formDat
 
     window.alert(nombre,cedula,fecha_ingreso,cargo,salario)
     try {
@@ -92,7 +92,7 @@ export default function GenerarPdf() {
         </form>
       </div>
       <div>
-      <embed src="" type="" />
+      <embed src={"../../public/TEMPLATE.pdf"} width="100%" height="800px" type="application/pdf" />
       </div>
     </main>
   );
