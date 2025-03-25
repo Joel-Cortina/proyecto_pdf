@@ -1,9 +1,81 @@
+import { useState } from "react";
 import Red5glogo from "../assets/red5glogo.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function Vistaprincipal() {
-
   const navigate = useNavigate();
+  const [cedula, setCedula] = useState("");
+  const [pdfUrl, setPdfUrl] = useState(""); 
+  const [email, setEmail] = useState("");
+  const [showModal, setShowModal] = useState(false); 
+  const [loading, setLoading] = useState(false); 
+
+  const handleSearch = async () => {
+    if (!cedula) {
+      alert("Por favor, ingresa una cédula.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/buscarpdf?cedula=${cedula}`, {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        setPdfUrl(url);
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Error al buscar el PDF:", error);
+      alert("Hubo un problema al buscar el PDF.");
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!email) {
+      alert("Por favor, ingresa un correo electrónico.");
+      return;
+    }
+
+    const pdfBlob = await fetch(pdfUrl)
+      .then((response) => response.blob())
+      .catch((error) => {
+        console.error("Error al descargar el PDF:", error);
+        alert("Hubo un problema al descargar el PDF.");
+        throw error;  
+      });
+
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("archivo", pdfBlob, `${cedula}.pdf`);  
+
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/enviar_correo", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(data.mensaje || "Correo enviado correctamente");
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error("Error al enviar el correo:", error);
+      alert("Hubo un problema al enviar el correo.");
+    } finally {
+      setLoading(false);
+      setShowModal(false); 
+    }
+  };
 
   return (
     <div className="appp">
@@ -34,11 +106,14 @@ export default function Vistaprincipal() {
                     placeholder="Buscar por cédula"
                     id="cedulaInput"
                     aria-label="Buscar"
+                    value={cedula}
+                    onChange={(e) => setCedula(e.target.value)}
                   />
                   <button
                     className="btn btn-outline-success"
                     type="button"
                     id="searchBtn"
+                    onClick={handleSearch}
                   >
                     <i className="fa fa-search"></i>
                   </button>
@@ -65,110 +140,74 @@ export default function Vistaprincipal() {
                   Añadir Usuario<i className="fa-solid fa-user-plus"></i>
                 </a>
               </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link custom-icon"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="fa-solid fa-circle-user"></i>
-                </a>
-                <ul
-                  className="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="navbarDropdown"
-                >
-                  <li>
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      data-bs-toggle="modal"
-                      data-bs-target="#logoutModal"
-                    >
-                      Cerrar Sesión
-                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                    </a>
-                  </li>
-                </ul>
-              </li>
             </ul>
           </div>
         </div>
       </nav>
 
-      <div className="container mt-4 flex-grow-1">
-        <div id="pdfContainer" style={{display: "none"}}>
-          <iframe id="pdfIframe" width="100%" height="700px"></iframe>
-          <div className="mt-3 d-flex justify-content-between flex-wrap">
-            <a
-              className="nav-link btn btn-primary custom-btn custom-btn-primary"
-              href="#"
-              id="downloadPdfBtn"
-            >
-              Descargar PDF<i className="fa-solid fa-arrow-down"></i>
-            </a>
-            <a
-              className="nav-link btn btn-success custom-btn custom-btn-success"
-              href="#"
-              id="sendEmailBtn"
-              data-bs-toggle="modal"
-              data-bs-target="#sendEmailModal"
-            >
-              Enviar por Correo <i className="fas fa-envelope"></i>
-            </a>
-          </div>
+      {pdfUrl && (
+        <div className="pdf-viewer">
+          <iframe
+            src={pdfUrl}
+            width="100%"
+            height="600px"
+            title="PDF Viewer"
+          />
+          <button
+            className="btn btn-primary mt-3"
+            onClick={() => setShowModal(true)}
+          >
+            Enviar al correo
+          </button>
         </div>
-      </div>
+      )}
 
-      <footer className="footer">
-        <div className="container text-center">
-          <p>
-            &copy; 2025 Red 5G. Todos los derechos reservados - Cra. 53 # 80 -
-            198 | Atlántica Torre Empresarial | Piso 9 | Barranquilla, Colombia
-          </p>
-        </div>
-      </footer>
-
-      <div
-        className="modal fade"
-        id="logoutModal"
-        tabindex="-1"
-        aria-labelledby="logoutModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="logoutModalLabel">
-                Cerrar Sesión
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              ¿Estás seguro de que deseas cerrar sesión?
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-              <a className="btn btn-danger" href="/template/index.html">
-                Cerrar Sesión
-              </a>
+      {/* Modal para ingresar el correo */}
+      {showModal && (
+        <div className="modal fade show" style={{ display: "block" }} tabIndex="-1" role="dialog" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Enviar PDF por Correo</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Ingresa el correo electrónico"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSendEmail}
+                  disabled={loading}
+                >
+                  Enviar
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
