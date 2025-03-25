@@ -1,18 +1,32 @@
+
+
+
+@font-face {
+  font-family: "PoppinsFont" ;
+  src: url("./fonts/Poppins/Poppins-Light.ttf") format("truetype")  ;
+}
+
+
 * {
   font-family: Arial, Helvetica, sans-serif;
+  font-family: "PoppinsFont";
+  box-sizing: border-box;
+  color: #4f4d64 ;
 }
 
 .login {
-  background: #ececec;
+  background: #ffffff;
   padding: 0 1.25rem;
+  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .bienvenida {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: lighter;
   text-align: center;
-  margin-bottom: 0.625rem;
-  color: #40414a;
+  margin-bottom: 0.325rem;
+
 }
 
 .main {
@@ -37,13 +51,26 @@
   border-radius: 0.625rem 0 0 0.625rem;
 }
 
-.row {
+
+
+
+.roww{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 43.75rem;
-  height: 28.125rem;
+  height: 24.125rem;
   border-radius: 0.625rem;
-  background: #fff;
-  box-shadow: 0.3125rem 0.3125rem 0.625rem 0.0625rem rgba(0, 0, 0, 0.2);
+
+  box-shadow: rgba(50, 50, 93, 0.12) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
+
+.to-center{
+  display: flex ;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
 
 .rigth {
   display: flex;
@@ -55,13 +82,12 @@
 .input-box {
   width: 20.625rem;
   box-sizing: border-box;
-  margin-top: -1.25rem;
 }
 
 .input-box header {
   font-weight: 700;
   text-align: center;
-  margin-bottom: 1.875rem;
+  margin-bottom: 0.875rem;
   font-size: 23px;
 }
 
@@ -77,7 +103,7 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 0.0625rem solid rgba(0, 0, 0, 0.2);
+  border-bottom: 0.0625rem solid rgba(238, 0, 0, 0.2);
   outline: none;
   margin-bottom: 1.25rem;
   color: #40414a;
@@ -104,7 +130,7 @@
 
 .input-field .input:focus,
 .input-field .input:valid {
-  border-bottom: 0.0625rem solid #743ae1;
+  border-bottom: 0.0625rem solid #ff000031;
 }
 
 .input-field i {
@@ -120,22 +146,24 @@
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  border-radius: 20px;
+  border-radius: 7px;
   background-color: #ccc;
   color: white;
   cursor: not-allowed;
   border: 0.0625rem solid #ddd;
+  transition: all 300ms;
 }
 
 .submit:enabled {
-  background-color: #dc3545;
+  background-color: red;
+  color: white;
   cursor: pointer;
   border: 0.0625rem solid #dc3545;
 }
 
 .submit:enabled:hover {
   background-color: #c82333;
-  border-color: #bd2130;
+  
 }
 
 .registrarse {
@@ -159,6 +187,7 @@ span a:hover {
 @media only screen and (max-width: 48rem) {
   .side-image {
     border-radius: 0.625rem 0.625rem 0 0;
+    display: hidden;
   }
 
   img {
@@ -393,9 +422,11 @@ body {
 
 
 .generate-pdf{
+  height: 100vh;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 2rem;
+  padding: 4rem;
 }
 
 #searchBarContainer {
@@ -406,10 +437,18 @@ body {
 }
 
 @media (max-width: 768px) {
+  .side-image-img{
+    visibility: hidden;
+  }
+
   #searchBarContainer {
       margin-left: 0;
       margin-top: 10px;
       width: 100%;
+  }
+
+  html{
+    background-color: red;
   }
 
   .navbar-nav {
@@ -488,4 +527,21 @@ body.dark-mode .btn-close {
 
 .btn-añadir:hover {
   background-color: #b3b3b3;
+}
+
+.title{
+  font-size: 1.20rem;
+}
+
+
+.gap-generar{
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.50rem;
+  height: 100%;
+  width: 100%;
+  
 }

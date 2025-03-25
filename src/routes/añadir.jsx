@@ -1,5 +1,6 @@
 import Red5glogo from "../assets/red5glogo.jpg";
 import UserLogo from "../assets/userlogo.png"
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 
 export default function Añadir() {
@@ -60,7 +61,7 @@ export default function Añadir() {
       <h2 className="titulo mb-4">Agregar Usuario</h2>
       <form className=" añadir p-4 p-md-5 border rounded-3 bg-light">
         <div className="text-center mb-4">
-          <img src={UserLogo} alt="Red5G Logo" className="logouser" />
+        <Icon icon="lucide:user-round" width="104" height="104" />
         </div>
         <div className="mb-3">
           <label for="username" className="form-label">
@@ -70,7 +71,7 @@ export default function Añadir() {
             type="text"
             className="form-control"
             id="username"
-            placeholder="Usuario"
+            placeholder="Jesus"
             required
           />
         </div>
@@ -79,10 +80,11 @@ export default function Añadir() {
             Contraseña
           </label>
           <input
+            defaultValue={"kdskfsfkj"}
             type="password"
             className="form-control"
             id="password"
-            placeholder="Contraseña"
+            placeholder="Administrador2332"
             required
           />
         </div>

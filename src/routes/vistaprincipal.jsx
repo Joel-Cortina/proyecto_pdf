@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Red5glogo from "../assets/red5glogo.jpg";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function Vistaprincipal() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Vistaprincipal() {
 
   const handleSearch = async () => {
     if (!cedula) {
-      alert("Por favor, ingresa una cédula.");
+      window.alert("Por favor, ingresa una cédula.");
       return;
     }
 
@@ -81,7 +82,7 @@ export default function Vistaprincipal() {
     <div className="appp">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand d-flex align-items-center" href="#">
+          <a className="navbar-brand d-flex align-items-center" >
             <img src={Red5glogo} alt="Red5G Logo" className="logo" />
             <span className="ms-2">Red 5G</span>
           </a>
@@ -103,7 +104,7 @@ export default function Vistaprincipal() {
                   <input
                     className="form-control me-2"
                     type="search"
-                    placeholder="Buscar por cédula"
+                    placeholder="cédula"
                     id="cedulaInput"
                     aria-label="Buscar"
                     value={cedula}
@@ -128,7 +129,7 @@ export default function Vistaprincipal() {
                   id="generatePdfBtn"
                   onClick={() => navigate("/generar")}
                 >
-                  Generar PDF<i className="fa-solid fa-file-pdf"></i>
+                  Generar PDF <Icon icon="mdi:file-pdf-box" width="20" height="20" />
                 </button>
               </li>
               <li className="nav-item">
