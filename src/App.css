@@ -1,4 +1,4 @@
-
+@import "tailwindcss";
 
 
 @font-face {
@@ -7,11 +7,30 @@
 }
 
 
+
+.button-red{
+  @apply bg-red-500 p-2 rounded-md text-white border-b-4 border-red-800 flex justify-center items-center flex gap-2
+}
+
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  @apply bg-red-200 text-red-500  p-2 rounded-md cursor-pointer justify-center flex items-center w-fit
+} 
+
+.button-red-claro{
+  @apply bg-red-100 p-2 rounded-md text-red-500  
+}
+
+
 * {
   font-family: Arial, Helvetica, sans-serif;
   font-family: "PoppinsFont";
   box-sizing: border-box;
-  color: #4f4d64 ;
+  /* color: #4f4d64 ; */
 }
 
 .login {
@@ -348,33 +367,7 @@ footer {
   flex-grow: 1;
 }
 
-@media (max-width: 48rem) {
-  #searchBarContainer {
-      margin-left: 0;
-      margin-top: 0.625rem;
-      width: 100%;
-  }
 
-  .navbar-nav {
-      flex-direction: column;
-      align-items: flex-start;
-  }
-
-  .navbar-nav .nav-item {
-      width: 100%;
-  }
-
-  .navbar-nav .nav-item .nav-link {
-      width: 100%;
-      text-align: left;
-  }
-}
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .container {
   padding: 1rem;

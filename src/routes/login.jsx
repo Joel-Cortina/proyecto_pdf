@@ -51,8 +51,9 @@ export default function Login() {
       })
       .then((data) => {
 
-        console.log("Respuestaas:", data);
+        console.log("Respuestaassss:", data);
         localStorage.setItem("token", data.message)
+        console.log(data.message)
         console.log(`Local storage Item :  ${localStorage.getItem("token")}`)
         location.href = "/home"
 
@@ -68,7 +69,6 @@ export default function Login() {
 
 
 
-  
 
   return (
     <div className="login">
@@ -121,7 +121,7 @@ export default function Login() {
                   <input
                     ref={inputDisable}
                     type="submit"
-                    className="submit"
+                    className="button-red"
                     id="loginButton"
                     value="Iniciar sesión"
                   />

@@ -139,7 +139,7 @@ export default function Vistaprincipal() {
                   <input
                     className="form-control me-2"
                     type="search"
-                    placeholder="cédula"
+                    placeholder="Cédula"
                     id="cedulaInput"
                     aria-label="Buscar"
                     value={cedula}
